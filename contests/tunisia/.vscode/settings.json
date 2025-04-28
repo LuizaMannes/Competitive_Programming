@@ -1,0 +1,13 @@
+{
+    "files.associations": {
+        "string": "cpp",
+        "format": "cpp",
+        "iosfwd": "cpp",
+        "vector": "cpp",
+        "limits": "cpp",
+        "valarray": "cpp",
+        "algorithm": "cpp",
+        "chrono": "cpp",
+        "random": "cpp"
+    }
+}
