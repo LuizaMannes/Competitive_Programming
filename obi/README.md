@@ -1,2 +1,2 @@
 # OBI
-Problems I solved for each OBI phase mostly on the Neps Academy website.
+Problems I solved for each OBI phase mostly on https://neps.academy/br.
