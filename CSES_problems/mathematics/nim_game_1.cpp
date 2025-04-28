@@ -7,12 +7,12 @@ using namespace std;
 
 void solve() {
     int n; cin >> n;
-    int chore=0;
+    int res=0;
     for(int i=0;i<n;i++){
         int a;cin >> a;
-        chore^=a;
+        res^=a;
     }
-    cout << (chore? "first" : "second") << endl;
+    cout << (res? "first" : "second") << endl;
 
 
 }

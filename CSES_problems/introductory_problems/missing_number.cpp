@@ -11,13 +11,13 @@ void solve() {
     for(int i=1;i<n;i++){
         cin >> ar[i];
     }
-    int chore=0;
+    int res=0;
     for(int i=1;i<n;i++){
-        chore^=ar[i];
-        chore^=i;
+        res^=ar[i];
+        res^=i;
     }
-    chore^=n;
-    cout << chore << endl;
+    res^=n;
+    cout << res << endl;
     
 
 }
