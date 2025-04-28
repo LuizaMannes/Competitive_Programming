@@ -6,7 +6,7 @@ using namespace std;
 #define endl '\n'
 
 const int maxn = 2e5 + 5;
-int seg[4 * maxn], lazy[4 * maxn], rep[4 * maxn];
+int seg[4 * maxn], lazy[4 * maxn] = {0}, rep[4 * maxn] = {0};
 
 void build(int p, int l, int r, vector<int> &ar){
     if(l == r) seg[p] = ar[l];
@@ -28,11 +28,11 @@ void push(int p, int l, int r){
             rep[p * 2] = 1;
             rep[p * 2 + 1] = 1;
         }
-    }else{
+    }else if(lazy[p] != 0){
         seg[p] += lazy[p] * (r - l + 1);
         if(l != r){
-            lazy[p * 2] = lazy[p];
-            lazy[p * 2 + 1] = lazy[p];
+            lazy[p * 2] += lazy[p];
+            lazy[p * 2 + 1] += lazy[p];
         }
     }
     rep[p] = 0;
