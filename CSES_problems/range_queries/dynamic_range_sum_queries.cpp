@@ -32,13 +32,13 @@ void update(int p, int l, int r, int u, int k){
     }
 }
 
-int query(int p, int l, int r, int R, int L){
+int query(int p, int l, int r, int L, int R){
     if(l > R || r < L) return 0;
     if(l >= L && r <= R) return seg[p];
 
     int mid = (l + r) / 2;
-    int ql = query(p * 2, l, mid, R, L);
-    int qr = query(p * 2 + 1, mid + 1, r, R, L);
+    int ql = query(p * 2, l, mid, L, R);
+    int qr = query(p * 2 + 1, mid + 1, r, L, R);
 
     return ql + qr;
 }
@@ -63,7 +63,7 @@ void solve() {
             int l, r; cin >> l >> r;
             l--;
             r--;
-            cout << query(1, 0, n - 1, r, l) << endl;
+            cout << query(1, 0, n - 1, l, r) << endl;
         }
     }
 }
