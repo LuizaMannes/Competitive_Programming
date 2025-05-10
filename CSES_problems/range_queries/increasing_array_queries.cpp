@@ -6,9 +6,12 @@ using namespace std;
 #define endl '\n'
 
 const int maxn = 2e5 + 5;
+
 struct Nodo{
     int mx,idx; 
 }seg[maxn * 4];
+
+const Nodo nulo = {0, 0};
 
 void build(int p, int l, int r, vector<int> &ar){
     if(l == r){
@@ -27,11 +30,7 @@ void build(int p, int l, int r, vector<int> &ar){
 }
 
 Nodo query(int p, int l, int r, int L, int R){
-    if(l > R || r < L){
-        Nodo nulo;
-        nulo.idx = nulo.mx = 0;
-        return nulo;
-    }
+    if(l > R || r < L) return nulo;
     if(l >= L && r <= R) return seg[p];
 
     int mid = (l + r) / 2;

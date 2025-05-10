@@ -13,8 +13,10 @@ void update(int p, int l, int r, int i, int k){
         seg[p] += k;
     }else{
         int mid = (l + r) / 2;
+
         if(i <= mid) update(p * 2, l, mid, i, k);
         else update(p * 2 + 1, mid + 1, r, i, k);
+
         seg[p] = seg[p * 2] + seg[p * 2 + 1];
     }
 }
@@ -26,6 +28,7 @@ int query(int p, int l, int r, int L, int R){
     int mid = (l + r) / 2;
     int ql = query(p * 2, l, mid, L, R);
     int qr = query(p * 2 + 1, mid + 1, r, L, R);
+
     return ql + qr;
 }
 

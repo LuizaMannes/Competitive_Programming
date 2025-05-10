@@ -11,6 +11,16 @@ struct Node{
     int s, pref;
 } seg[4 * maxn];
 
+const Node neutro = {0, 0};
+
+Node sum(Node a, Node b){
+    Node c;
+    c.s = a.s + b.s;
+    c.pref = max(a.pref, a.s + b.pref);
+
+    return c;
+}
+
 void build(int p, int l, int r, vector<int> &ar){
     if(l == r){
         seg[p].s = seg[p].pref = ar[l];
@@ -19,8 +29,7 @@ void build(int p, int l, int r, vector<int> &ar){
         build(p * 2, l, mid, ar);
         build(p * 2 + 1, mid + 1, r, ar);
 
-        seg[p].s = seg[p * 2].s + seg[p * 2 + 1].s;
-        seg[p].pref = max(seg[p * 2].pref, seg[p * 2].s + seg[p * 2 + 1].pref);
+        seg[p] = sum(seg[p * 2], seg[p * 2 + 1]);
     }
 }
 
@@ -32,33 +41,23 @@ void update(int p, int l, int r, int i, int k){
         if(i <= mid) update(p * 2, l, mid, i, k);
         else update(p * 2 + 1, mid + 1, r, i, k);
 
-        seg[p].s = seg[p * 2].s + seg[p * 2 + 1].s;
-        seg[p].pref = max(seg[p * 2].pref, seg[p * 2].s + seg[p * 2 + 1].pref);
+        seg[p] = sum(seg[p * 2], seg[p * 2 + 1]);
     }
 }
 
 Node query(int p, int l, int r, int L, int R){
-    if(l > R || r < L){
-        Node temp;
-        temp.s = temp.pref = 0;
-        return temp;
-    }
+    if(l > R || r < L) return neutro;
     if(l >= L && r <= R) return seg[p];
 
     int mid = (l + r) / 2;
     Node ql = query(p * 2, l, mid, L, R);
     Node qr = query(p * 2 + 1, mid + 1, r, L, R);
     
-    Node n;
-    n.s = ql.s + qr.s;
-    n.pref = max(ql.pref, ql.s + qr.pref);
-    return n;
+    return sum(ql, qr);
 }
 
 int res(int L, int R, int s){
-    Node n = query(1, 0, s, L, R);
-
-    return n.pref;
+    return query(1, 0, s, L, R).pref;
 }
 
 void solve() {

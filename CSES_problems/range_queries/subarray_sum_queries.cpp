@@ -11,6 +11,17 @@ struct Node{
     int m, suf, pref, sum;
 }seg[maxn * 4];
 
+Node sum(Node a, Node b){
+    Node c;
+    c.sum = a.sum + b.sum;
+    c.suf = max(b.suf, b.sum + a.suf);
+    c.pref = max(a.pref, a.sum + b.pref);
+    c.m = max(a.m, b.m);
+    c.m = max(c.m, a.suf + b.pref);
+
+    return c;
+}
+
 void build(int p, int l, int r, vector<int> &ar){
         if(l == r){
             seg[p].suf = seg[p].m = seg[p].pref = seg[p].sum = ar[l];
@@ -19,11 +30,7 @@ void build(int p, int l, int r, vector<int> &ar){
             build(p * 2, l, mid, ar);
             build(p * 2 + 1, mid + 1, r, ar);
         
-            seg[p].sum = seg[p * 2].sum + seg[p * 2 + 1].sum;
-            seg[p].suf = max(seg[p * 2 + 1].suf, seg[p * 2 + 1].sum + seg[p * 2].suf);
-            seg[p].pref = max(seg[p * 2].pref, seg[p * 2].sum + seg[p * 2 + 1].pref);
-            seg[p].m = max(seg[p * 2].m, seg[p * 2 + 1].m);
-            seg[p].m = max(seg[p].m, seg[p * 2].suf + seg[p * 2 + 1].pref);
+            seg[p] = sum(seg[p * 2], seg[p * 2 + 1]);
         }
 }
 
@@ -35,11 +42,7 @@ void update(int p, int l, int r, int i, int k){
             if(i <= mid) update(p * 2, l, mid, i, k);
             else update(p * 2 + 1, mid + 1, r, i, k);
         
-            seg[p].sum = seg[p * 2].sum + seg[p * 2 + 1].sum;
-            seg[p].suf = max(seg[p * 2 + 1].suf, seg[p * 2 + 1].sum + seg[p * 2].suf);
-            seg[p].pref = max(seg[p * 2].pref, seg[p * 2].sum + seg[p * 2 + 1].pref);
-            seg[p].m = max(seg[p * 2].m, seg[p * 2 + 1].m);
-            seg[p].m = max(seg[p].m, seg[p * 2].suf + seg[p * 2 + 1].pref);
+            seg[p] = sum(seg[p * 2], seg[p * 2 + 1]);
         }
 
 }
