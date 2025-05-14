@@ -19,8 +19,8 @@ void solve() {
 
     for(int i = 1; i < mx; i++) up[i][0] = max(up[i][0], up[i - 1][0]);
 
-    for(int i = 1; i < mx; i++){
-        for(int j = 0; j < L - 1; j++){
+    for(int j = 0; j < L - 1; j++){
+        for(int i = 1; i < mx; i++){
             up[i][j + 1] = up[up[i][j]][j];
         }
     }
@@ -29,18 +29,14 @@ void solve() {
         int a, b; cin >> a >> b;
 
         int res = 0; 
-        while(b){
-            int ind = -1;
-
-            for(int i = 0; i < L; i++){
-                if(up[b][i] >= a) ind = i;
+        
+        for(int i = L - 1; i >= 0; i--){
+            if(up[b][i] >= a){
+                b = up[b][i];
+                res += (1 << i);
             }
-
-            if(ind == -1) break;
-
-            res += (1 << ind);
-            b = up[b][ind];
         }
+
         cout << res << endl;
     }
 }
