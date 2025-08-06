@@ -17,8 +17,7 @@ vector<pair<int,int>> adj[mx];
 vector<ll> dist(mx, inf);
 
 bool dij(int s, ll mid){
-    vector<ll> distc(n + 1);
-    for(int i = 1; i <= n; i++) distc[i] = dist[i];
+    vector<ll> distc(n + 1, inf);
 
     distc[s] = -mid;
     priority_queue<T, vector<T>, greater<>> p;
@@ -31,11 +30,11 @@ bool dij(int s, ll mid){
         if(d != distc[u]) continue;
 
         for(auto [v, w] :adj[u]){
-            if(distc[v] >= d + w){
+            if(distc[v] > d + w && d + w <= dist[v]){
                 distc[v] = d + w;
                 p.emplace(distc[v], v);
             }
-        
+        }
     }
 
     return false;

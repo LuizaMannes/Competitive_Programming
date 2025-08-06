@@ -16,54 +16,44 @@ void solve() {
 
     sort(ar.begin(), ar.end());
 
-    vector<int> dp1(n);
-    dp1[0] = ar[0].second;
-    int m = dp1[0], ind = 0;
-    for(int i = 1; i < n; i++){
-        if(ar[i].first - ar[i - 1].first <= d){
-            dp1[i] = dp1[i - 1] + ar[i].second;
-            if(dp1[i] >= m){
-                ind = i;
-                m = dp1[i];
+    vector<int> v(n + 1);
+    for(int i = 1; i <= n; i++){
+        v[i] = ar[i - 1].second + v[i - 1];
+    }
+
+    int res1 = 0, l = 0, r = 0;
+    for(int i = 0, j = 0; i < n; i++){
+        while(j < n && ar[j].first - ar[i].first <= d){
+            if(res1 <= v[j + 1] - v[i]){
+                res1 = v[j + 1] - v[i];
+                l = i; r = j;
             }
-        }else{
-            dp1[i] = ar[i].second;
-            if(dp1[i] >= m){
-                ind = i;
-                m = dp1[i];
-            }
+            j++;
         }
     }
 
-    vector<int> u(n);
-    u[ind] = 1;
-    for(int i = ind; i > 0; i--){
-        if(ar[i].first - ar[i - 1].first <= d) u[i - 1] = 1;
-        else break;
-    }
 
     vector<pair<int,int>> ar2;
-    int mx1 = 0;
     for(int i = 0; i < n; i++){
-        mx1 = max(dp1[i], mx1);
-        if(u[i]) continue;
+        if(i >= l && i <= r) continue;
         ar2.push_back(ar[i]);
     }
 
-    vector<int> dp2(ar2.size());
-    if(ar2.size()) dp2[0] = ar2[0].second;
-    for(int i = 1; i < ar2.size(); i++){
-        if(ar2[i].first - ar2[i - 1].first <= d){
-            dp2[i] = dp2[i - 1] + ar2[i].second;
-        }else{
-            dp2[i] = ar2[i].second;
+    vector<int> v2(ar2.size() + 1);
+    for(int i = 1; i <= ar2.size(); i++){
+        v2[i] = ar2[i - 1].second + v2[i - 1];
+    }
+
+    int res2 = 0;
+    for(int i = 0, j = 0; i < ar2.size(); i++){
+        while(j < ar2.size() && ar2[j].first - ar2[i].first <= d){
+            res2 = max(res2, v2[j + 1] - v2[i]);
+            j++;
         }
     }
 
-    int mx2 = 0;
-    for(int i = 0; i < ar2.size(); i++) mx2 = max(mx2, dp2[i]);
-
-    cout << mx1 + mx2 << endl;
+    cout << res1 << " " << res2 << endl;
+    cout << res1 + res2 << endl;
 }
 
 signed main() {
