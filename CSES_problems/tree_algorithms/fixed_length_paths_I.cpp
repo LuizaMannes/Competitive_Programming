@@ -2,13 +2,15 @@
 
 using namespace std;
 
-#define int long long
 #define endl '\n'
+
+using ll = long long;
 
 const int mx = 2e5 + 5;
 
-vector<int> adj[mx];
-int sz[mx], pai[mx], dis[mx], vis[mx], k, res = 0;
+basic_string<int> adj[mx];
+int sz[mx], pai[mx], dis[mx], vis[mx], k;
+ll res = 0;
 
 int find_size(int u, int p){
     if(vis[u]) return 0;
