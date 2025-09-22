@@ -1,11 +1,21 @@
 #include <bits/stdc++.h>
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
 
 using namespace std;
+using namespace __gnu_pbds;
 
 #define int long long
 #define endl '\n'
 
+template <typename T>
+using ordered_set =
+    tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
+
+
 using t = tuple<int,int,int>;
+
+const int inf = 1e9 + 1;
 
 void solve() {
     int n; cin >> n;
@@ -16,35 +26,25 @@ void solve() {
         line.push_back({a, b, i}); 
         line.push_back({b, -a, i}); 
     }
-
     sort(line.begin(),line.end());
-
+    
     vector<int> con(n), econ(n);
-    set<t> fila;
-    priority_queue<t> fin;
-    for(auto [a, b, c] : line){
-        if(b < 0){
-            cout << -b << " " << a << " " << c << endl;
-            int ind = fila.find({-b, a, c}) - fila.begin();
-            cout << ind << endl;
-            fila.erase({-b, a, c});
-            if(!fila.empty()){
-                auto [d, e, f] = *fila.begin();
-                if(d <= -b){
-                    econ[c] = 1;
-                }
-            }
+    ordered_set<pair<int,int>> atual, fin;
 
-            //fin.push({-b, a, c});
-            //while(fin.size() && get<0>(fin.front()) < -b){
-              //  fin.pop();
-            //}
-            //if(fin.size() > 1) con[c] = 1;
+    for(auto [a, b, c]: line){
+        if(b < 0){
+            atual.erase({-b,c});
+            econ[c] = atual.order_of_key({-b + 1, 0});
+
+            if(fin.size()){
+                con[c] = fin.size() - fin.order_of_key({-b - 1, inf});
+            }
+            fin.insert({-b, c});
             continue;
         }
-
-        fila.insert({a, b, c});
+        atual.insert({a,c});
     }
+    
     
     for(int i = 0; i < n; i++) cout << con[i] << " ";
     cout << endl;
